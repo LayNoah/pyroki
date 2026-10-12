@@ -51,5 +51,5 @@ bash generate_all_urdfs.sh
 # Run the viser simulation for Indy 7
 ```bash
 cd ~/workspaces/movensys_ws/src/pyroki
-pyr example/01_basic_ik.py
+pyr examples/01_basic_ik.py
 ```
