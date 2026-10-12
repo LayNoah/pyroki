@@ -4,6 +4,7 @@ Run online planning in collision aware environments.
 """
 
 import time
+from pathlib import Path
 
 import numpy as np
 import pyroki as pk
@@ -11,20 +12,36 @@ import viser
 from pyroki.collision import HalfSpace, RobotCollision, Sphere
 from robot_descriptions.loaders.yourdfpy import load_robot_description
 from viser.extras import ViserUrdf
-
 import pyroki_snippets as pks
 
+# This is for custom URDF loading.
+import yourdfpy
+
+# --- Alternative: Load a custom URDF file ---
+    # import yourdfpy
+    # from pathlib import Path
+    # urdf_path = Path("path/to/your/robot.urdf")
+    # urdf = yourdfpy.URDF.load(urdf_path)
+# --------------------------------------------
 
 def main():
     """Main function for online planning with collision."""
-    urdf = load_robot_description("panda_description")
-    target_link_name = "panda_hand"
+    
+    # Load urdf.
+    urdf_path = Path(__file__).parent.parent / "urdf/indy_description/urdf_files/indy7.urdf"
+    urdf = yourdfpy.URDF.load(urdf_path)
+    target_link_name = "link6"
     robot = pk.Robot.from_urdf(urdf)
 
+    # RobotCollision의 의미는 무엇인가?
     robot_coll = RobotCollision.from_urdf(urdf)
+
+    # plane_coll의 의미는 무엇인가?
     plane_coll = HalfSpace.from_point_and_normal(
         np.array([0.0, 0.0, 0.0]), np.array([0.0, 0.0, 1.0])
     )
+
+    # sphere_coll의 의미는 무엇인가?
     sphere_coll = Sphere.from_center_and_radius(
         np.array([0.0, 0.0, 0.0]), np.array([0.05])
     )

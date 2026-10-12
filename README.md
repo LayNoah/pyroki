@@ -21,35 +21,8 @@ Please refer to the [documentation](https://chungmin99.github.io/pyroki/) for mo
 
 ## Installation
 
-You can install `pyroki` with `pip`, on Python 3.10+:
+- Please follow `installation/setup.md`
 
-```
-git clone https://github.com/chungmin99/pyroki.git
-cd pyroki
-pip install -e .
-```
-
-## Status
-
-_May 6, 2025_: Initial release
-
-We are preparing and will release by _May 16, 2025_:
-
-- [x] Examples + documentation for hand / humanoid motion retargeting
-- [x] Documentation for using manually defined Jacobians
-- [x] Support with Python 3.10+
-
-## Limitations
-
-- **Static shapes & JIT overhead**: JAX JIT compilation is triggered on first run and when input shapes change (e.g., number of targets, obstacles). Arrays can be pre-padded to vectorize over inputs with different shapes.
-- **No sampling-based planners**: We don't include sampling-based planners (e.g., graphs, trees).
-- **Collision performance**: Speed and accuracy comparisons against other robot toolkits such as CuRobo have not been extensively performed, and is likely slower than other toolkits for collision-heavy scenarios.
-
-The following are current implementation limitations that could potentially be addressed in future versions:
-
-- **Joint types**: We only support revolute, continuous, prismatic, and fixed joints. Other URDF joint types are treated as fixed joints.
-- **Collision geometry**: We are limited to sphere, capsule, halfspace, and heightmap geometries. Mesh collision is approximated as capsules.
-- **Kinematic structures**: We only support kinematic trees; no closed-loop mechanisms or parallel manipulators.
 
 ## Citation
 

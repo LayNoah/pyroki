@@ -13,18 +13,18 @@ from viser.extras import ViserUrdf
 
 import pyroki_snippets as pks
 
+# This is for custom URDF loading.
+from pathlib import Path
+import yourdfpy
+
 
 def main():
     """Main function for basic IK."""
 
-    urdf = load_robot_description("panda_description")
-    # --- Alternative: Load a custom URDF file ---
-    # import yourdfpy
-    # from pathlib import Path
-    # urdf_path = Path("path/to/your/robot.urdf")
-    # urdf = yourdfpy.URDF.load(urdf_path)
-    # --------------------------------------------
-    target_link_name = "panda_hand"
+    # Load urdf.
+    urdf_path = Path(__file__).parent.parent / "urdf/indy_description/urdf_files/indy7_gripper.urdf"
+    urdf = yourdfpy.URDF.load(urdf_path)
+    target_link_name = "link6"
 
     # Create robot.
     robot = pk.Robot.from_urdf(urdf)

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<robot name="indy" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <xacro:include filename="$(find indy_description)/urdf/indy_macro.xacro"/>
+    <xacro:include filename="$(find indy_description)/urdf/gripper.xacro" />
+
+    <!-- indy_macro.xacro references $(arg prefix) directly -->
+    <xacro:arg name="prefix" default="" />
+
+    <xacro:property name="indy_type" value="indy7"/>
+    <xacro:property name="config_dir" value="$(find indy_description)/urdf/config"/>
+
+    <link name="world" />
+
+    <xacro:indy_robot
+        name="indy"
+        indy_type="${indy_type}"
+        indy_eye="false"
+        prefix="$(arg prefix)"
+        parent="world"
+        joint_limits_parameters_file="${config_dir}/${indy_type}/joint_limits.yaml"
+        kinematics_parameters_file="${config_dir}/${indy_type}/kinematics.yaml"
+        physical_parameters_file="${config_dir}/${indy_type}/physical_parameters.yaml"
+        visual_parameters_file="${config_dir}/${indy_type}/visual_parameters.yaml"
+        joint_axes_parameters_file="${config_dir}/${indy_type}/joint_axes.yaml"
+        transmission_hw_interface=""
+        initial_positions_file="${config_dir}/initial_positions.yaml"
+        sim_gazebo="false"
+        >
+        <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:indy_robot>
+
+    <!-- Indy7 tcp = flange face (link6 + 0.06 z), same as Dobot Link6 origin -->
+    <joint name="bracket_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="$(arg prefix)tcp" />
+      <child link="bracket" />
+    </joint>
+
+    <link name="bracket">
+      <inertial>
+        <origin xyz="0.0585 0.037 0" rpy="0 0 3.14" />
+        <mass value="0.001" />
+        <inertia ixx="8.29484481057063E-05" ixy="-1.45209400395148E-09" ixz="-1.72340872805449E-11"
+                 iyy="8.35928339777967E-05" iyz="-1.33911019721127E-07" izz="0.000131911087085913" />
+      </inertial>
+      <visual>
+        <origin xyz="0.0585 0.037 0" rpy="0 0 3.14" />
+        <geometry>
+          <mesh filename="file://$(find indy_description)/meshes/gripper/bracket.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name=""><color rgba="0 0 0 1" /></material>
+      </visual>
+      <collision>
+        <origin xyz="0.0585 0.037 0" rpy="0 0 3.14" />
+        <geometry>
+          <mesh filename="file://$(find indy_description)/meshes/gripper/bracket.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="gripper_joint" type="fixed">
+      <origin xyz="0 0.003 0.007" rpy="1.57 0 0" />
+      <parent link="bracket" />
+      <child link="gripper" />
+    </joint>
+
+    <xacro:gripper joint_vel="3.0" joint_effort="1000" />
+
+</robot>
